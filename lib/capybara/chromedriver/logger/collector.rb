@@ -17,18 +17,6 @@ module Capybara
           clear_errors!
         end
 
-        private
-
-        def raise_errors_if_needed!
-          return unless Capybara::Chromedriver::Logger.raise_js_errors?
-          return if errors.empty?
-
-          formatted_errors = errors.map(&:to_s)
-          error_list = formatted_errors.join("\n")
-
-          raise JsError, "Got some JS errors during testing:\n\n#{error_list}"
-        end
-
         def flush_logs!
           browser_logs.each do |log|
             message = Message.new(log)
@@ -39,6 +27,18 @@ module Capybara
             
             log_destination.puts message.to_s
           end
+        end
+
+        private
+
+        def raise_errors_if_needed!
+          return unless Capybara::Chromedriver::Logger.raise_js_errors?
+          return if errors.empty?
+
+          formatted_errors = errors.map(&:to_s)
+          error_list = formatted_errors.join("\n")
+
+          raise JsError, "Got some JS errors during testing:\n\n#{error_list}"
         end
 
         def clear_errors!

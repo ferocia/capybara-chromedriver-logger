@@ -61,6 +61,9 @@ Capybara::Chromedriver::Logger::TestHooks.for_rspec!
 
 # Option 2: if you prefer to hook it in manually:
 RSpec.configure do |config|
+  config.before :each, type: :feature do
+    Capybara::Chromedriver::Logger::TestHooks.before_example!
+  end
   config.after :each, type: :feature do
     Capybara::Chromedriver::Logger::TestHooks.after_example!
   end
